@@ -1,0 +1,85 @@
+package com.myboot.Students;
+
+
+import com.myboot.Courses.CourseServices;
+import com.myboot.Courses.Courses;
+import com.myboot.Courses.CoursesRepo;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
+
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+    private final StudentService studentService;
+    private final CourseServices courseServices;
+    private final StudentRepository studentRepository;
+    private final CoursesRepo coursesRepo;
+
+    public StudentController(StudentService studentService, CourseServices courseServices,
+                             StudentRepository studentRepository, CoursesRepo coursesRepo) {
+        this.studentService = studentService;
+        this.courseServices = courseServices;
+        this.studentRepository = studentRepository;
+        this.coursesRepo = coursesRepo;
+    }
+
+    @GetMapping
+    public List<Student> findAllStudents() {
+        return studentService.findAllStudents();
+    }
+
+   @GetMapping("{id}")
+    public Student findStudentById(@PathVariable Integer id) {
+        return studentService.findStudentById(id);
+
+    }
+
+    @PostMapping
+    public Student saveStudent(@RequestBody Student student)
+    {    return  studentRepository.save(student);
+    }
+
+
+    @GetMapping("{id}/courses")
+    public Set<Courses> findStudentCourses(@PathVariable Integer id) {
+        Student students = studentService.findStudentById(id);
+        return students.getAssignedCourses();
+    }
+
+
+
+
+
+       @PutMapping("/{sid}/{cid}")
+      public Student assingCourseStudent(
+              @PathVariable Integer sid,
+              @PathVariable Integer cid) {
+        return studentService.assingCourseStudent(sid, cid);
+
+    }
+
+   /* @DeleteMapping("{id}")
+    public void deleteStudent(@PathVariable Integer id) {
+        studentService.deleteStudent(id);
+    } */
+
+  /*  @PatchMapping("{id}")
+    public Student patchStudent(@PathVariable Integer id, @RequestBody Student student) {
+    Student toPatch = studentService.findStudentById(id);
+    if (toPatch.getName() != null){
+        toPatch.setName(student.getName());
+    }
+    if (toPatch.getAge() != 0){
+        toPatch.setAge(student.getAge());
+    }
+    if (student.getCourses() != null){
+        toPatch.setCourses(student.getCourses());
+    }
+    studentService.saveStudent(toPatch);
+    return studentService.findStudentById(id);
+    } */
+
+
+}

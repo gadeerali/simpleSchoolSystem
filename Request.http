@@ -1,0 +1,59 @@
+### GET request to example server
+GET http://localhost:8081/students
+
+###
+GET http://localhost:8081/students/3
+
+###
+POST http://localhost:8081/students
+Content-Type: application/json
+
+{
+  "name": "amen",
+  "age": 20
+}
+###
+POST http://localhost:8081/Courses
+Content-Type: application/json
+
+{
+  "Name": "math",
+  "Level": 3
+}
+###
+GET http://localhost:8081/Courses
+
+###
+//assign
+PUT http://localhost:8081/students/3/1
+
+###
+PATCH http://localhost:8081/students/1
+Content-Type: application/json
+
+{
+  "name": "rana"
+}
+###
+DELETE http://localhost:8081/students/1
+###
+GET http://localhost:8081/Staff
+###
+POST http://localhost:8081/Staff
+Content-Type: application/json
+
+{
+
+  "Name": "rana",
+  "title": "security"
+}
+###
+GET http://localhost:8081/Staff/1
+###
+PATCH http://localhost:8081/Staff/1
+Content-Type: application/json
+
+{
+  "Name": "rana",
+  "title": "manager"
+}

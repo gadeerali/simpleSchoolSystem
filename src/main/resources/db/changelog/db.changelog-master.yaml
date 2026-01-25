@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-students
+      author: school
+      changes:
+        - createTable:
+            tableName: STUDENTS
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: int
+  - changeSet:
+      id: 2-add-student-email
+      author: school
+      changes:
+        - addColumn:
+            tableName: STUDENTS
+            columns:
+              - column:
+                  name: email
+                  type: varchar(255)
