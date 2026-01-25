@@ -7,6 +7,7 @@ import com.myboot.Courses.CoursesRepo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -47,7 +48,10 @@ public class StudentController {
         Student students = studentService.findStudentById(id);
         return students.getAssignedCourses();
     }
-
+    @GetMapping("/summary/{id}")
+    public Optional<StudentSummary> findStudentSummaryById(@PathVariable Integer id) {
+        return Optional.ofNullable(studentRepository.findStudentSummaryById(id).orElse(null));
+    }
 
 
 

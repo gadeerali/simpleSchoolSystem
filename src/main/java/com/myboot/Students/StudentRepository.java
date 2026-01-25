@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     @Query("select s from Student s left join fetch s.assignedCourses where s.id = :id")
     Optional<Student> findByIdWithCourses(@Param("id") Integer id);
+    Optional<StudentSummary> findStudentSummaryById(Integer id);
 }

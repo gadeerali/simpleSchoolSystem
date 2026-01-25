@@ -5,11 +5,14 @@ GET http://localhost:8081/students
 GET http://localhost:8081/students/3
 
 ###
+GET http://localhost:8081/students/summary/2
+
+###
 POST http://localhost:8081/students
 Content-Type: application/json
 
 {
-  "name": "amen",
+  "name": "ali",
   "age": 20
 }
 ###
@@ -17,7 +20,7 @@ POST http://localhost:8081/Courses
 Content-Type: application/json
 
 {
-  "Name": "math",
+  "Name": "bio",
   "Level": 3
 }
 ###
