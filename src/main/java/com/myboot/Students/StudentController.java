@@ -53,7 +53,10 @@ public class StudentController {
         return Optional.ofNullable(studentRepository.findStudentSummaryById(id).orElse(null));
     }
 
-
+    @GetMapping("/specs/{age}")
+    public List<Student> findStudentsOlderthan(@PathVariable int age){
+        return studentService.findStudentsOlderthan(age);
+    }
 
 
        @PutMapping("/{sid}/{cid}")
@@ -64,10 +67,11 @@ public class StudentController {
 
     }
 
-   /* @DeleteMapping("{id}")
-    public void deleteStudent(@PathVariable Integer id) {
-        studentService.deleteStudent(id);
-    } */
+   @DeleteMapping
+    public void deleteAllStudent() {
+        studentService.deleteStudent();
+    } }
+
 
   /*  @PatchMapping("{id}")
     public Student patchStudent(@PathVariable Integer id, @RequestBody Student student) {
@@ -86,4 +90,4 @@ public class StudentController {
     } */
 
 
-}
+

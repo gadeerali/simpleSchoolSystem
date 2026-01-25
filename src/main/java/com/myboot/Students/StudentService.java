@@ -4,6 +4,7 @@ import com.myboot.Courses.Courses;
 import com.myboot.Courses.CoursesRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,15 +29,18 @@ public class StudentService {
     public void saveStudent(Student students) {
       studentRepository.save(students);
     }
+    public List<Student> findStudentsOlderthan(int age) {
+        Specification<Student> spec = SpecsFilters.ageGreaterThan(age);
+        return studentRepository.findAll(spec);
+
+
+    }
     @Transactional
     public Student findStudentById(Integer id) {
 
         return studentRepository.findByIdWithCourses(id).orElse(null);
     }
 
-    public void deleteStudent(Integer id) {
-        studentRepository.deleteById(id);
-    }
     @Transactional
     public Student assingCourseStudent(Integer stdId, Integer crsId) {
         Student student = studentRepository.findById(stdId).orElse(null);
@@ -55,5 +59,9 @@ public class StudentService {
         courses.getStudents().add(student);
         student.setAssignedCourses(coursesSet);
         return studentRepository.save(student);
+    }
+
+    public void deleteStudent() {
+        studentRepository.deleteAll();
     }
 }

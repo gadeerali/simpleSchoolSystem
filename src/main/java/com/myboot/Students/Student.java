@@ -1,6 +1,7 @@
 package com.myboot.Students;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.myboot.Courses.Courses;
 import jakarta.persistence.*;
@@ -20,7 +21,7 @@ public class Student {
     private int id;
     private String name;
     private int age;
-
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "Students_Courese",
