@@ -5,16 +5,22 @@ import com.myboot.Courses.CoursesRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
-
 @Service
 public class StudentService {
     private StudentRepository studentRepository;
     private CoursesRepo coursesRepo;
+    @Scheduled (cron = "0 30 11 * * ?")
+    public void scheduledStudents(){
+        long conut = studentRepository.count();
+        System.out.println("Total Students: "+conut);
+    }
+
 
     @Autowired
     public StudentService(StudentRepository studentRepository, CoursesRepo coursesRepo) {
