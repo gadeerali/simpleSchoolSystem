@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.myboot.Courses.Courses;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 
 import java.util.Objects;
@@ -20,6 +21,7 @@ public class Student {
 
     private int id;
     private String name;
+    @Min(value = 18, message = "Student must be at least 18 years old")
     private int age;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

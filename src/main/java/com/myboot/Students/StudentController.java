@@ -5,6 +5,7 @@ import com.myboot.Courses.CourseServices;
 import com.myboot.Courses.Courses;
 import com.myboot.Courses.CoursesRepo;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController
+
 @RequestMapping("/students")
 public class StudentController {
     private final StudentService studentService;
@@ -44,7 +46,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student saveStudent(@RequestBody Student student)
+    public Student saveStudent(@Validated @RequestBody Student student)
     {    return  studentRepository.save(student);
     }
 
