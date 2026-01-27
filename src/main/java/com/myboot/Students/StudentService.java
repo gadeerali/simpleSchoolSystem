@@ -2,31 +2,64 @@ package com.myboot.Students;
 
 import com.myboot.Courses.Courses;
 import com.myboot.Courses.CoursesRepo;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
+import org.jobrunr.jobs.annotations.Job;
+import org.jobrunr.jobs.annotations.Recurring;
+import org.jobrunr.scheduling.JobScheduler;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class StudentService {
     private StudentRepository studentRepository;
     private CoursesRepo coursesRepo;
-    @Scheduled (cron = "0 30 11 * * ?")
+    private final JobScheduler jobScheduler;
+    private static final Logger log = LoggerFactory.getLogger(StudentService.class);
+    @Autowired
+    public StudentService(StudentRepository studentRepository, CoursesRepo coursesRepo, JobScheduler jobScheduler) {
+        this.studentRepository = studentRepository;
+        this.coursesRepo = coursesRepo;
+        this.jobScheduler = jobScheduler;
+    }
+
     public void scheduledStudents(){
         long conut = studentRepository.count();
-        System.out.println("Total Students: "+conut);
+        log.info("Students Count: " + conut);
+    }
+   /* @PostConstruct
+    public void JobStarter() {
+        log.info("Server timezone: {}", java.time.ZoneId.systemDefault());
+        schedualStudentCount();
+    } */
+
+     /* public void schedualStudentCount() {
+        jobScheduler.scheduleRecurrently(
+                "daily-student-count",
+                "0 * * * * *",
+                this::scheduledStudents
+        );
+    } */
+
+    @Recurring (id = "daily-student-count", cron = "*/30 * * * * *")
+    @Job (name = "daily student count")
+    public void schedualStudentCount(){
+        scheduledStudents();
     }
 
 
-    @Autowired
-    public StudentService(StudentRepository studentRepository, CoursesRepo coursesRepo) {
-    this.studentRepository = studentRepository;
-    this.coursesRepo = coursesRepo;
-    }
+
+
     public List<Student> findAllStudents() {
         return studentRepository.findAll();
     }
