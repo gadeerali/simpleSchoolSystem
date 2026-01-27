@@ -4,7 +4,9 @@ package com.myboot.Students;
 import com.myboot.Courses.CourseServices;
 import com.myboot.Courses.Courses;
 import com.myboot.Courses.CoursesRepo;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +35,11 @@ public class StudentController {
 
    @GetMapping("{id}")
     public Student findStudentById(@PathVariable Integer id) {
-        return studentService.findStudentById(id);
+        Student student = studentService.findStudentById(id);
+        if (student == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
+        }
+        return student;
 
     }
 
@@ -46,6 +52,9 @@ public class StudentController {
     @GetMapping("{id}/courses")
     public Set<Courses> findStudentCourses(@PathVariable Integer id) {
         Student students = studentService.findStudentById(id);
+        if (students == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
+        }
         return students.getAssignedCourses();
     }
     @GetMapping("/summary/{id}")
@@ -63,14 +72,18 @@ public class StudentController {
       public Student assingCourseStudent(
               @PathVariable Integer sid,
               @PathVariable Integer cid) {
-        return studentService.assingCourseStudent(sid, cid);
+        Student updated = studentService.assingCourseStudent(sid, cid);
+        if (updated == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student or course not found");
+        }
+        return updated;
 
     }
 
    @DeleteMapping
     public void deleteAllStudent() {
         studentService.deleteStudent();
-    } }
+    }
 
 
   /*  @PatchMapping("{id}")
@@ -89,5 +102,4 @@ public class StudentController {
     return studentService.findStudentById(id);
     } */
 
-
-
+}

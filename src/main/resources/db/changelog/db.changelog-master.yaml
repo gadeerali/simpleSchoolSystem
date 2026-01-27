@@ -31,3 +31,77 @@ databaseChangeLog:
               - column:
                   name: email
                   type: varchar(255)
+
+  - changeSet:
+      id: 3-create-courses
+      author: school
+      changes:
+        - createTable:
+            tableName: COURSES
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: level
+                  type: int
+  - changeSet:
+      id: 4-create-staff
+      author: school
+      changes:
+        - createTable:
+            tableName: STAFF
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: title
+                  type: varchar(255)
+  - changeSet:
+      id: 5-create-students-courses
+      author: school
+      changes:
+        - createTable:
+            tableName: Students_Courese
+            columns:
+              - column:
+                  name: student_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: courses_id
+                  type: int
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: Students_Courese
+            columnNames: student_id, courses_id
+            constraintName: pk_students_courese
+        - addForeignKeyConstraint:
+            baseTableName: Students_Courese
+            baseColumnNames: student_id
+            referencedTableName: STUDENTS
+            referencedColumnNames: id
+            constraintName: fk_students_courese_student
+        - addForeignKeyConstraint:
+            baseTableName: Students_Courese
+            baseColumnNames: courses_id
+            referencedTableName: COURSES
+            referencedColumnNames: id
+            constraintName: fk_students_courese_course

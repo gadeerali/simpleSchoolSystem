@@ -16,7 +16,7 @@ public class CoursesController {
     @GetMapping
     public List<Courses> findAllCourses()
     {
-      return courseServices.findAllCourses();
+        return courseServices.findAllCourses();
     }
 
     @PostMapping
