@@ -1,6 +1,10 @@
 package com.myboot.Staff;
 
 
+import com.myboot.Students.Student;
+import jakarta.persistence.EntityManager;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,13 +13,21 @@ import java.util.List;
 public class StaffServices {
 
     private StaffRepo staffRepo;
+    private final EntityManager entityManager;
 
 
-    public StaffServices(StaffRepo staffRepo) {
+    public StaffServices(StaffRepo staffRepo, EntityManager entityManager) {
         this.staffRepo = staffRepo;
+        this.entityManager = entityManager;
     }
-    public List<Staff> findAll() {
-        return staffRepo.findAll();
+
+    public List<Staff> findAll(boolean softDeleted) {
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedStaffFilter");
+        filter.setParameter("isDeleted", softDeleted);
+        List<Staff> staff = staffRepo.findAll();
+        session.disableFilter("deletedStaffFilter");
+        return staff;
     }
 
     public void saveStaffRepo(Staff staff) {
@@ -28,5 +40,9 @@ public class StaffServices {
     public Staff findStaffById(Integer id) {
         return staffRepo.findById(id).orElse(null);
 }
+    public void softdeleteStaff(Integer id) {
+        staffRepo.deleteById(id);
+    }
+
 
 }

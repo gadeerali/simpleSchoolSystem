@@ -16,8 +16,8 @@ public class StaffController {
         this.staffServices = staffServices;
     }
 @GetMapping
-    public List<Staff> findAllStaff(){
-    return staffRepo.findAll();
+    public List<Staff> findAllStaff(@RequestParam(defaultValue = "false") boolean softDeleted){
+    return staffServices.findAll(softDeleted);
     }
 
 @GetMapping("{id}")
@@ -42,4 +42,9 @@ public class StaffController {
         staffRepo.save(updatedStaff);
         return staffServices.findStaffById(id);
 }
+@DeleteMapping("{id}")
+    public void softdeleteStaff(@PathVariable Integer id){
+        staffServices.softdeleteStaff(id);
+    }
+
 }

@@ -31,7 +31,6 @@ databaseChangeLog:
               - column:
                   name: email
                   type: varchar(255)
-
   - changeSet:
       id: 3-create-courses
       author: school
@@ -72,9 +71,28 @@ databaseChangeLog:
               - column:
                   name: title
                   type: varchar(255)
+
+  - changeSet:
+      id: 6-add-students-deleted
+      author: school
+      changes:
+        - addColumn:
+            tableName: STUDENTS
+            columns:
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
   - changeSet:
       id: 5-create-students-courses
       author: school
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: Students_Courese
       changes:
         - createTable:
             tableName: Students_Courese
@@ -105,3 +123,18 @@ databaseChangeLog:
             referencedTableName: COURSES
             referencedColumnNames: id
             constraintName: fk_students_courese_course
+
+  - changeSet:
+      id: 7-add-staff-deleted
+      author: school
+      changes:
+        - addColumn:
+            tableName: STAFF
+            columns:
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+

@@ -2,7 +2,10 @@ package com.myboot.Students;
 
 import com.myboot.Courses.Courses;
 import com.myboot.Courses.CoursesRepo;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.scheduling.JobScheduler;
@@ -11,7 +14,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,15 +26,17 @@ public class StudentService {
     private CoursesRepo coursesRepo;
     private final StringRedisTemplate redis;
     private final JobScheduler jobScheduler;
+    private final EntityManager entityManager;
 
     private static final Logger log = LoggerFactory.getLogger(StudentService.class);
     @Autowired
     public StudentService(StudentRepository studentRepository, CoursesRepo coursesRepo,
-                          JobScheduler jobScheduler, StringRedisTemplate redis) {
+                          JobScheduler jobScheduler, StringRedisTemplate redis, EntityManager entityManager) {
         this.studentRepository = studentRepository;
         this.coursesRepo = coursesRepo;
         this.jobScheduler = jobScheduler;
         this.redis = redis;
+        this.entityManager = entityManager;
     }
 
     @Recurring (id = "daily-student-count", cron = "*/20 * * * * *")
@@ -56,11 +60,18 @@ public class StudentService {
                 this::scheduledStudents
         );
     } */
+    public void softDeleteStudent(Integer id) {
+        studentRepository.deleteById(id);
+    }
 
 
-
-    public List<Student> findAllStudents() {
-        return studentRepository.findAll();
+    public List<Student> findAllStudents(boolean softDelete) {
+       Session session = entityManager.unwrap(Session.class);
+       Filter filter = session.enableFilter("deletedStudentFilter");
+       filter.setParameter("isDeleted", softDelete);
+       List<Student> students = studentRepository.findAll();
+       session.disableFilter("deletedStudentFilter");
+       return students;
     }
 
 

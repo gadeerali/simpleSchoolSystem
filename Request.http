@@ -2,7 +2,7 @@
 GET http://localhost:8081/students
 
 ###
-GET http://localhost:8081/students/3
+GET http://localhost:8081/students/1
 
 ###
 GET http://localhost:8081/students/summary/2
@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
   "name": "rana",
-  "age": 12
+  "age": 29
 }
 ###
 GET http://localhost:8081/students/specs/20
@@ -40,7 +40,7 @@ Content-Type: application/json
   "name": "rana"
 }
 ###
-DELETE http://localhost:8081/students
+DELETE http://localhost:8081/students/1
 ###
 GET http://localhost:8081/Staff
 ###
@@ -53,7 +53,9 @@ Content-Type: application/json
   "title": "security"
 }
 ###
-GET http://localhost:8081/Staff/1
+DELETE http://localhost:8081/Staff/1
+###
+GET http://localhost:8081/Staff
 ###
 PATCH http://localhost:8081/Staff/1
 Content-Type: application/json

@@ -31,8 +31,12 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> findAllStudents() {
-        return studentService.findAllStudents();
+    public List<Student> findAllStudents(@RequestParam(defaultValue = "false") boolean softDeleted) {
+        return studentService.findAllStudents(softDeleted);
+    }
+   @DeleteMapping("{id}")
+   public void softDeleteStudent(@PathVariable Integer id) {
+        studentService.softDeleteStudent(id);
     }
 
    @GetMapping("{id}")

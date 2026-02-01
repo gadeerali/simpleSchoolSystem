@@ -18,7 +18,6 @@ public class Courses { @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Level;
 
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "assignedCourses" , fetch = FetchType.LAZY)
     private Set<Student> students = new HashSet<>();
 

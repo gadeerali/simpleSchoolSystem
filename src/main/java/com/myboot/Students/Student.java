@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.myboot.Courses.Courses;
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
 import jakarta.validation.constraints.Min;
+import org.hibernate.annotations.*;
 
 
 import java.util.Objects;
@@ -15,6 +17,9 @@ import java.util.Set;
 @Entity
 @Table(name = "STUDENTS")
 @JsonPropertyOrder({"id", "name", "age", "assignedCourses"})
+@SQLDelete(sql = "UPDATE STUDENTS SET deleted = true WHERE id = ?")
+@FilterDef(name = "deletedStudentFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedStudentFilter" , condition = "deleted = :isDeleted")
 public class Student {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -23,6 +28,7 @@ public class Student {
     private String name;
     @Min(value = 18, message = "Student must be at least 18 years old")
     private int age;
+    private boolean deleted = false;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -82,4 +88,6 @@ public class Student {
         return Objects.hash(id);
     }
 }
+
+
 
