@@ -28,7 +28,7 @@ public class CoursesController {
     @PutMapping("{id}")
     public Courses updateCourses(@PathVariable Integer id, @RequestBody Courses courses)
     {
-        Courses toUpdate = courseServices.findCourseById(id);
+        Courses toUpdate = courseServices.CourseAndStudentsById(id);
         toUpdate.setName(courses.getName());
         toUpdate.setLevel(courses.getLevel());
         courseServices.saveCourses(toUpdate);
@@ -42,7 +42,7 @@ public class CoursesController {
     @PatchMapping("{id}")
     public Courses patchCourse(@PathVariable Integer id, @RequestBody Courses courses)
     {
-        Courses toPatch = courseServices.findCourseById(id);
+        Courses toPatch = courseServices.CourseAndStudentsById(id);
         if (toPatch.getName() != null)
         {
             toPatch.setName(courses.getName());
@@ -52,6 +52,10 @@ public class CoursesController {
         }
         courseServices.saveCourses(toPatch);
         return toPatch;
+    }
+
+    public Courses CourseAndStudentsById(Integer id) {
+        return courseServices.CourseAndStudentsById(id);
     }
 
 

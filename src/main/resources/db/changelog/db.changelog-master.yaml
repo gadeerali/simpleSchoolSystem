@@ -138,3 +138,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
+  - changeSet:
+      id: 8-rename-students-courses
+      author: school
+      changes:
+        - renameTable:
+            oldTableName: Students_Courese
+            newTableName: students_courese
+

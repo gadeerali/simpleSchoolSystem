@@ -20,8 +20,9 @@ public class CourseServices {
         coursesRepo.save(courses);
     }
 
-    public Courses findCourseById(Integer id) {
-        return coursesRepo.findById(id).orElse(null);
+
+    public Courses CourseAndStudentsById(Integer id) {
+        return coursesRepo.CourseAndStudentsById(id).orElse(null);
     }
 
     public void deleteCourse(Integer id) {

@@ -1,28 +1,32 @@
 ### GET request to example server
+//students
 GET http://localhost:8081/students
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+###
+GET http://localhost:8081/students/15
 
 ###
-GET http://localhost:8081/students/1
+GET http://localhost:8081/students/summary/19
 
 ###
-GET http://localhost:8081/students/summary/2
-
+DELETE http://localhost:8081/students/21
 ###
 POST http://localhost:8081/students
 Content-Type: application/json
 
 {
-  "name": "rana",
-  "age": 29
+  "name": "ahmed",
+  "age": 20
 }
 ###
-GET http://localhost:8081/students/specs/20
+GET http://localhost:8081/students/specs/18
 ###
+//courses
 POST http://localhost:8081/Courses
 Content-Type: application/json
 
 {
-  "Name": "bio",
+  "Name": "calc",
   "Level": 3
 }
 ###
@@ -30,7 +34,7 @@ GET http://localhost:8081/Courses
 
 ###
 //assign
-PUT http://localhost:8081/students/3/1
+PUT http://localhost:8081/students/15/1
 
 ###
 PATCH http://localhost:8081/students/1

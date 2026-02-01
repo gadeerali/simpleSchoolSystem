@@ -32,6 +32,7 @@ dependencies {
     implementation 'org.jobrunr:jobrunr-spring-boot-4-starter:8.3.1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.1'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
 

@@ -29,10 +29,9 @@ public class Student {
     @Min(value = 18, message = "Student must be at least 18 years old")
     private int age;
     private boolean deleted = false;
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "Students_Courese",
+            name = "students_courese",
             joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "courses_id", referencedColumnName = "id")
     )
