@@ -16,7 +16,8 @@ public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String Name;
+    private String name;
+    private String password;
     private String title;
     private boolean deleted = false;
 
@@ -29,16 +30,23 @@ public class Staff {
         return id;
     }
 
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        name = name;
     }
 
     public String getTitle() {
@@ -53,11 +61,11 @@ public class Staff {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Staff staff = (Staff) o;
-        return id == staff.id && Objects.equals(Name, staff.Name) && Objects.equals(title, staff.title);
+        return id == staff.id && Objects.equals(name, staff.name) && Objects.equals(title, staff.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, Name, title);
+        return Objects.hash(id, name, title);
     }
 }

@@ -24,10 +24,11 @@ public class StaffController {
     public Staff findStaffbyId(@PathVariable Integer id){
         return staffServices.findStaffById(id);
     }
-@PostMapping
-    public Staff PutStaff(@RequestBody Staff staff){
-        return staffRepo.save(staff);
-}
+    @PostMapping
+    public Staff PutStaff(@RequestBody Staff staff) {
+        staffServices.saveStaffRepo(staff);
+        return staff;
+    }
 
 @PatchMapping("{id}")
     public Staff PatchStaff(@PathVariable Integer id, @RequestBody Staff staff){

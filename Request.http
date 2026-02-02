@@ -53,8 +53,9 @@ Content-Type: application/json
 
 {
 
-  "Name": "rana",
-  "title": "security"
+  "Name": "loging",
+  "title": "jwtAuth",
+  "password": "thepassword"
 }
 ###
 DELETE http://localhost:8081/Staff/1
@@ -76,9 +77,9 @@ POST http://localhost:8081/auth/login
 Content-Type: application/json
 
 {
-  "username": "admin",
-  "password": "admin123"
+  "username": "loging",
+  "password": "thepassword"
 }
 ###
-GET http://localhost:8081/students
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MDAyNjk4MCwiZXhwIjoxNzcwMDMwNTgwfQ.sqGhwqXk74kwsVN3mHeNEUvVLPt1glqJxEn6JI0g4sSDoo4TkJWNxBQsc1Z3tuHj39RV0zmJkb69nzcV8ccuvw
+GET http://localhost:8081/Staff
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzAwNDAzNTIsImV4cCI6MTc3MDA0Mzk1Mn0.66vKUavlT2Y0diGFuaMfCWwFui2QiQlh0gRsEEiYGyFv6aErl6Eq0N_diR4SpeQEGpsdU_ZAN5kvRLkNvzCz6g

@@ -145,4 +145,16 @@ databaseChangeLog:
         - renameTable:
             oldTableName: Students_Courese
             newTableName: students_courese
-
+  - changeSet:
+      id: 9-add-password-Staff
+      author: school
+      changes:
+        - addColumn:
+            tableName: STAFF
+            columns:
+              - column:
+                  name: password
+                  type: varchar(255)
+                  defaultValue: "change-password"
+                  constraints:
+                    nullable: false

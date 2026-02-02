@@ -5,6 +5,7 @@ import com.myboot.Students.Student;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Filter;
 import org.hibernate.Session;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,13 +13,15 @@ import java.util.List;
 @Service
 public class StaffServices {
 
+    private final PasswordEncoder passwordEncoder;
     private StaffRepo staffRepo;
     private final EntityManager entityManager;
 
 
-    public StaffServices(StaffRepo staffRepo, EntityManager entityManager) {
+    public StaffServices(StaffRepo staffRepo, EntityManager entityManager, PasswordEncoder passwordEncoder) {
         this.staffRepo = staffRepo;
         this.entityManager = entityManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Staff> findAll(boolean softDeleted) {
@@ -31,6 +34,8 @@ public class StaffServices {
     }
 
     public void saveStaffRepo(Staff staff) {
+        String encodedpassword = passwordEncoder.encode(staff.getPassword());
+        staff.setPassword(encodedpassword);
         staffRepo.save(staff);
     }
 

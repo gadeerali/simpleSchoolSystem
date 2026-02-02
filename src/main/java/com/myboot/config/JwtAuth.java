@@ -14,7 +14,7 @@ import java.util.Date;
 public class JwtAuth {
     @Value("${security.jwt.secret}")
     private String secretKey;
-
+        
     @Value("${security.jwt.expiration-minutes}")
     private long expirationMinutes;
 
