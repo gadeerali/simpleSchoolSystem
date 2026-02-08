@@ -51,7 +51,7 @@ public class StudentController {
 
     @PostMapping
     public Student saveStudent(@Validated @RequestBody Student student)
-    {    return  studentRepository.save(student);
+    {    return  studentService.saveStudent(student);
     }
 
 

@@ -3,7 +3,8 @@
 GET http://localhost:8081/students
 Authorization: Basic YWRtaW46YWRtaW4xMjM=
 ###
-GET http://localhost:8081/students/15
+GET http://localhost:8081/students/43
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1NDYyMzcsImV4cCI6MTc3MDU0OTgzN30.RvdVlyfXBY6kqmek6rmOrU2tawHWVgvFbu2_YJkXwx8hsaYbC_E3x0EzzE0xaN7LYU__E_T5Jz45of6fbKkVqw
 
 ###
 GET http://localhost:8081/students/summary/19
@@ -12,10 +13,11 @@ GET http://localhost:8081/students/summary/19
 DELETE http://localhost:8081/students/21
 ###
 POST http://localhost:8081/students
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1NDYyMzcsImV4cCI6MTc3MDU0OTgzN30.RvdVlyfXBY6kqmek6rmOrU2tawHWVgvFbu2_YJkXwx8hsaYbC_E3x0EzzE0xaN7LYU__E_T5Jz45of6fbKkVqw
 Content-Type: application/json
 
 {
-  "name": "ahmed",
+  "name": "ali",
   "age": 20
 }
 ###
@@ -31,6 +33,7 @@ Content-Type: application/json
 }
 ###
 GET http://localhost:8081/Courses
+
 
 ###
 //assign
@@ -81,5 +84,5 @@ Content-Type: application/json
   "password": "thepassword"
 }
 ###
-GET http://localhost:8081/Staff
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzAwNDAzNTIsImV4cCI6MTc3MDA0Mzk1Mn0.66vKUavlT2Y0diGFuaMfCWwFui2QiQlh0gRsEEiYGyFv6aErl6Eq0N_diR4SpeQEGpsdU_ZAN5kvRLkNvzCz6g
+GET http://localhost:8081/students
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1Mzc5NTQsImV4cCI6MTc3MDU0MTU1NH0.bG1onxD5aR49_imKmVDHE7fDgV8WLX9HNfxv1yY59MNV7gLA4fCJf-YOQtk395Zos_KkLv8trKtHzW-HCnkYTA

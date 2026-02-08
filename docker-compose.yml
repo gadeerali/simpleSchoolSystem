@@ -13,6 +13,7 @@ services:
     networks:
       - network
     restart: unless-stopped
+
   redis:
     container_name: redis-the-school-system
     image: redis:latest
@@ -22,9 +23,25 @@ services:
       - network
     restart: unless-stopped
 
+  kafka:
+    container_name: kafka-the-school-system
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    command:
+      - redpanda start
+      - --smp 1
+      - --overprovisioned
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://kafka:9092,external://localhost:19092
+    ports:
+      - "19092:19092"
+    networks:
+      - network
+    restart: unless-stopped
+
 networks:
   network:
     driver: bridge
+
 volumes:
   db2:
-
+  kafka_data:
