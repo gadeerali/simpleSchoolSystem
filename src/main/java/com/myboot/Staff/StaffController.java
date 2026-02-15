@@ -1,6 +1,7 @@
 package com.myboot.Staff;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +17,16 @@ public class StaffController {
         this.staffServices = staffServices;
     }
 @GetMapping
-    public List<Staff> findAllStaff(@RequestParam(defaultValue = "false") boolean softDeleted){
-    return staffServices.findAll(softDeleted);
-    }
+    public ResponseEntity<List<Staff>> findAllStaff(@RequestParam(defaultValue = "false") boolean softDeleted){
+    List<Staff> list = staffServices.findAll(softDeleted);
+
+    int total = list.size();
+    return ResponseEntity
+            .ok()
+            .header("Content-Range", "Staff 0-" + (total - 1) + "/" + total)
+            .body(list);
+
+}
 
 @GetMapping("{id}")
     public Staff findStaffbyId(@PathVariable Integer id){

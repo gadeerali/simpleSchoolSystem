@@ -1,6 +1,7 @@
 package com.myboot.Courses;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,9 +15,16 @@ public class CoursesController {
     }
 
     @GetMapping
-    public List<Courses> findAllCourses()
+    public ResponseEntity<List<Courses>> findAllCourses()
     {
-        return courseServices.findAllCourses();
+        List<Courses> list = courseServices.findAllCourses();
+
+        int  total = list.size();
+        return ResponseEntity
+                .ok()
+                .header("Content-Range", "Staff 0-" + (total - 1) + "/" + total)
+                .body(list);
+
     }
 
     @PostMapping

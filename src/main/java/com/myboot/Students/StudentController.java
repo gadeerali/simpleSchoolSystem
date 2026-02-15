@@ -5,6 +5,7 @@ import com.myboot.Courses.CourseServices;
 import com.myboot.Courses.Courses;
 import com.myboot.Courses.CoursesRepo;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,8 +32,17 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> findAllStudents(@RequestParam(defaultValue = "false") boolean softDeleted) {
-        return studentService.findAllStudents(softDeleted);
+    public ResponseEntity<List<Student>> findAllStudents(@RequestParam(defaultValue = "false") boolean softDeleted) {
+
+
+        List<Student> list = studentService.findAllStudents(softDeleted);
+
+        int total = list.size();
+        return ResponseEntity
+                .ok()
+                .header("Content-Range", "Staff 0-" + (total - 1) + "/" + total)
+                .body(list);
+
     }
    @DeleteMapping("{id}")
    public void softDeleteStudent(@PathVariable Integer id) {
