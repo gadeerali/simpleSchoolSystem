@@ -3,8 +3,8 @@
 GET http://localhost:8081/students
 Authorization: Basic YWRtaW46YWRtaW4xMjM=
 ###
-GET http://localhost:8081/students/43
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1NDYyMzcsImV4cCI6MTc3MDU0OTgzN30.RvdVlyfXBY6kqmek6rmOrU2tawHWVgvFbu2_YJkXwx8hsaYbC_E3x0EzzE0xaN7LYU__E_T5Jz45of6fbKkVqw
+GET http://localhost:8081/students/45
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1NTI2MzksImV4cCI6MTc3MDU1NjIzOX0.hFGuKeBlZHTs7coSPuUAlnVbZjP4eb2fIo3bdub1UccpeLwSj0PBUxhKbKT_gPNgFElyiMyoCYqkxIO6qMqiuQ
 
 ###
 GET http://localhost:8081/students/summary/19
@@ -13,11 +13,11 @@ GET http://localhost:8081/students/summary/19
 DELETE http://localhost:8081/students/21
 ###
 POST http://localhost:8081/students
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1NDYyMzcsImV4cCI6MTc3MDU0OTgzN30.RvdVlyfXBY6kqmek6rmOrU2tawHWVgvFbu2_YJkXwx8hsaYbC_E3x0EzzE0xaN7LYU__E_T5Jz45of6fbKkVqw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1NTI2MzksImV4cCI6MTc3MDU1NjIzOX0.hFGuKeBlZHTs7coSPuUAlnVbZjP4eb2fIo3bdub1UccpeLwSj0PBUxhKbKT_gPNgFElyiMyoCYqkxIO6qMqiuQ
 Content-Type: application/json
 
 {
-  "name": "ali",
+  "name": "mona",
   "age": 20
 }
 ###
@@ -56,14 +56,15 @@ Content-Type: application/json
 
 {
 
-  "Name": "loging",
-  "title": "jwtAuth",
-  "password": "thepassword"
+  "name": "admin",
+  "title": "administrator",
+  "password": "admin321"
 }
 ###
 DELETE http://localhost:8081/Staff/1
 ###
 GET http://localhost:8081/Staff
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzExMzcwNTgsImV4cCI6MTc3MTE0MDY1OH0.E3QEaAP5Y_eCF3al1tECYgRI5oDHDjowJYfu30RXpqIDE-CN5iE15TOlEC1hLSJG2sOQ_th3rl5MHy228ce4mw
 ###
 PATCH http://localhost:8081/Staff/1
 Content-Type: application/json
@@ -80,8 +81,8 @@ POST http://localhost:8081/auth/login
 Content-Type: application/json
 
 {
-  "username": "loging",
-  "password": "thepassword"
+  "username": "admin",
+  "password": "admin321"
 }
 ###
 GET http://localhost:8081/students

@@ -46,7 +46,7 @@ public class Staff {
     }
 
     public void setName(String name) {
-        name = name;
+        this.name = name;
     }
 
     public String getTitle() {
