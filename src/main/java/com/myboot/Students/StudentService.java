@@ -13,8 +13,9 @@ import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,6 @@ import java.util.HashSet;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
 
 @Component
 @Service
@@ -90,32 +90,65 @@ public class StudentService {
       return student;
     }
 
-   /* @PostConstruct
-    public void JobStarter() {
-        log.info("Server timezone: {}", java.time.ZoneId.systemDefault());
-        schedualStudentCount();
-    } */
-
-     /* public void schedualStudentCount() {
-        jobScheduler.scheduleRecurrently(
-                "daily-student-count",
-                "0 * * * * *",
-                this::scheduledStudents
-        );
-    } */
+    /*@Transactional
     public void softDeleteStudent(Integer id) {
+
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student == null) return;
+
+        student.getAssignedCourses().clear();
+
+        studentRepository.delete(student);
+    }
+
+     */
+
+    @Transactional
+    public void deleteStudetntById(Integer id) {
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student == null) return;
+        student.getAssignedCourses().clear();
+        studentRepository.save(student);
         studentRepository.deleteById(id);
     }
 
+   /* @Transactional
+    public void removeStudentFromCourse(int studentId, int courseId) {
+        Student student = studentRepository.findById(studentId).orElse(null);
+        Courses course = coursesRepo.findById(courseId).orElse(null);
+        if (student != null && course != null) {
+            student.getAssignedCourses().remove(course);
+            course.getStudents().remove(student);
+        }
 
-    public List<Student> findAllStudents(boolean softDelete) {
+    }
+
+    */
+
+    @Transactional
+    public void deleteCourse(int courseId) {
+        Courses course = coursesRepo.findById(courseId).orElse(null);
+        if (course == null) return;
+
+        for (Student student : new HashSet<>(course.getStudents())) {
+            course.removeStudent(student);
+        }
+
+        coursesRepo.delete(course);
+    }
+
+    public Page<Student> findAllStudents(boolean softDelete, Pageable pageable) {
        Session session = entityManager.unwrap(Session.class);
        Filter filter = session.enableFilter("deletedStudentFilter");
        filter.setParameter("isDeleted", softDelete);
-       List<Student> students = studentRepository.findAll();
+       Page<Student> students = studentRepository.findAll(pageable);
        session.disableFilter("deletedStudentFilter");
        return students;
     }
+
+
+
+
 
 
     public List<Student> findStudentsOlderthan(int age) {
@@ -152,6 +185,10 @@ public class StudentService {
 
     public void deleteStudent() {
         studentRepository.deleteAll();
+    }
+
+    public Student updateStudent(Integer sid, Student student) {
+        return studentRepository.save(student);
     }
 }
 

@@ -4,6 +4,9 @@ package com.myboot.Students;
 import com.myboot.Courses.CourseServices;
 import com.myboot.Courses.Courses;
 import com.myboot.Courses.CoursesRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,25 +34,74 @@ public class StudentController {
         this.studentRepository = studentRepository;
         this.coursesRepo = coursesRepo;
     }
+  /*
+    @GetMapping
+    public Page<Student> findAllStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "false") boolean softDeleted) {
+
+
+        Pageable pageable = PageRequest.of(page, size);
+        return studentService.findAllStudents(pageable, softDeleted);
+    }
+   */
 
     @GetMapping
-    public ResponseEntity<List<Student>> findAllStudents(@RequestParam(defaultValue = "false") boolean softDeleted) {
+    public ResponseEntity<List<Student>> getAllStudents(
+            @RequestParam String range) {
 
 
-        List<Student> list = studentService.findAllStudents(softDeleted);
+        range = range.replace("[", "").replace("]", "");
 
-        int total = list.size();
-        return ResponseEntity
-                .ok()
-                .header("Content-Range", "Staff 0-" + (total - 1) + "/" + total)
-                .body(list);
+        String[] parts = range.split(",");
+
+        int start = Integer.parseInt(parts[0]);
+        int end = Integer.parseInt(parts[1]);
+
+        int perPage = end - start + 1;
+        int pageIndex = start / perPage;
+
+        Pageable pageable = PageRequest.of(pageIndex, perPage);
+        Page<Student> studentPage = studentService.findAllStudents(false, pageable);
+
+        List<Student> content = studentPage.getContent();
+        long total = studentPage.getTotalElements();
+
+        return ResponseEntity.ok()
+                .header("Content-Range", "students " + start + "-" + end + "/" + total)
+                 .body(content);
+    }
+
+
+
+    /*@GetMapping("{page}")
+    public Page<Student> getStudentPages(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "5") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> studentpages = studentRepository.findAll(pageable);
+
+        return studentpages;
 
     }
-   @DeleteMapping("{id}")
+
+     */
+
+
+ /*  @DeleteMapping("{id}")
    public void softDeleteStudent(@PathVariable Integer id) {
         studentService.softDeleteStudent(id);
     }
 
+  */
+
+    @DeleteMapping("{id}")
+    public Map<String, Integer> deleteStudent(@PathVariable Integer id) {
+        System.out.println("delete student");
+        studentService.deleteStudetntById(id);
+        return Map.of("id", id);
+    }
    @GetMapping("{id}")
     public Student findStudentById(@PathVariable Integer id) {
         Student student = studentService.findStudentById(id);
@@ -84,7 +137,7 @@ public class StudentController {
     }
 
 
-       @PutMapping("/{sid}/{cid}")
+     /*  @PutMapping("/{sid}/{cid}")
       public Student assingCourseStudent(
               @PathVariable Integer sid,
               @PathVariable Integer cid) {
@@ -94,6 +147,16 @@ public class StudentController {
         }
         return updated;
 
+    }
+
+      */
+
+
+
+
+    @PutMapping("/{sid}")
+    public Student updateStudent(@PathVariable Integer sid, @RequestBody Student student) {
+        return studentService.updateStudent(sid, student);
     }
 
    @DeleteMapping

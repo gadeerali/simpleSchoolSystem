@@ -37,6 +37,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/Staff").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/students/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/Courses/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/Courses/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/Courses/**").permitAll()
                         .anyRequest().authenticated())
 
                 .addFilterBefore(new JwtFilter(jwtAuth), UsernamePasswordAuthenticationFilter.class);

@@ -66,13 +66,8 @@ public class Student {
         this.age = age;
     }
 
-    public Set<Courses> getAssignedCourses() {
-        return assignedCourses;
-    }
-
-    public void setAssignedCourses(Set<Courses> assignedCourses) {
-        this.assignedCourses = assignedCourses;
-    }
+    public Set<Courses> getAssignedCourses() { return assignedCourses; }
+    public void setAssignedCourses(Set<Courses> assignedCourses) { this.assignedCourses = assignedCourses; }
 
         @Override
     public boolean equals(Object o) {

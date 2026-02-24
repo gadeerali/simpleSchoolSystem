@@ -1,8 +1,14 @@
 package com.myboot.Courses;
 
 
+import com.myboot.Students.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -10,16 +16,19 @@ import java.util.List;
 @RequestMapping("/Courses")
 public class CoursesController {
     private final CourseServices courseServices;
-    public CoursesController(CourseServices courseServices) {
+    private final CoursesRepo coursesRepo;
+
+    public CoursesController(CourseServices courseServices, CoursesRepo coursesRepo) {
         this.courseServices = courseServices;
+        this.coursesRepo = coursesRepo;
     }
 
     @GetMapping
     public ResponseEntity<List<Courses>> findAllCourses()
     {
-        List<Courses> list = courseServices.findAllCourses();
+        List<Courses> list = coursesRepo.findAll();
+        int total = list.size();
 
-        int  total = list.size();
         return ResponseEntity
                 .ok()
                 .header("Content-Range", "Staff 0-" + (total - 1) + "/" + total)
@@ -60,6 +69,14 @@ public class CoursesController {
         }
         courseServices.saveCourses(toPatch);
         return toPatch;
+    }
+    @GetMapping("{id}")
+    public Courses findCourseById(@PathVariable Integer id) {
+       Courses courses = courseServices.findCourseById(id);
+       if (courses == null) {
+           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found");
+       }
+       return courses;
     }
 
     public Courses CourseAndStudentsById(Integer id) {

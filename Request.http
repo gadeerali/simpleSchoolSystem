@@ -1,10 +1,10 @@
 ### GET request to example server
 //students
 GET http://localhost:8081/students
-Authorization: Basic YWRtaW46YWRtaW4xMjM=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MTE1NjgwNSwiZXhwIjoxNzcxMTYwNDA1fQ.w-Pz802_ZuVN_ImDfZW-qpvnHHZSRVMqzRuUXZ3RAzFZvavcgE7Xr8y3So4MRYPXIt7j6OMXTSJC7NmksglLJQ
 ###
-GET http://localhost:8081/students/45
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1NTI2MzksImV4cCI6MTc3MDU1NjIzOX0.hFGuKeBlZHTs7coSPuUAlnVbZjP4eb2fIo3bdub1UccpeLwSj0PBUxhKbKT_gPNgFElyiMyoCYqkxIO6qMqiuQ
+GET http://localhost:8081/students/46
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MTE1NjgwNSwiZXhwIjoxNzcxMTYwNDA1fQ.w-Pz802_ZuVN_ImDfZW-qpvnHHZSRVMqzRuUXZ3RAzFZvavcgE7Xr8y3So4MRYPXIt7j6OMXTSJC7NmksglLJQ
 
 ###
 GET http://localhost:8081/students/summary/19
@@ -13,11 +13,11 @@ GET http://localhost:8081/students/summary/19
 DELETE http://localhost:8081/students/21
 ###
 POST http://localhost:8081/students
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1NTI2MzksImV4cCI6MTc3MDU1NjIzOX0.hFGuKeBlZHTs7coSPuUAlnVbZjP4eb2fIo3bdub1UccpeLwSj0PBUxhKbKT_gPNgFElyiMyoCYqkxIO6qMqiuQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MTE1NjgwNSwiZXhwIjoxNzcxMTYwNDA1fQ.w-Pz802_ZuVN_ImDfZW-qpvnHHZSRVMqzRuUXZ3RAzFZvavcgE7Xr8y3So4MRYPXIt7j6OMXTSJC7NmksglLJQ
 Content-Type: application/json
 
 {
-  "name": "mona",
+  "name": "nora",
   "age": 20
 }
 ###
@@ -25,10 +25,11 @@ GET http://localhost:8081/students/specs/18
 ###
 //courses
 POST http://localhost:8081/Courses
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MTMyOTI1NiwiZXhwIjoxNzcxMzMyODU2fQ.HbIdqr5D1pD3uXZYZz9Qhwf75zs8Isr4fYrM6cyI_zekxZR5bsUlMsuwos69v-ZA81Y95kmZWYu1eKRODA2Wjw
 Content-Type: application/json
 
 {
-  "Name": "calc",
+  "Name": "bio",
   "Level": 3
 }
 ###
@@ -37,7 +38,7 @@ GET http://localhost:8081/Courses
 
 ###
 //assign
-PUT http://localhost:8081/students/15/1
+PUT http://localhost:8081/students/15/2
 
 ###
 PATCH http://localhost:8081/students/1
@@ -64,7 +65,7 @@ Content-Type: application/json
 DELETE http://localhost:8081/Staff/1
 ###
 GET http://localhost:8081/Staff
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzExMzcwNTgsImV4cCI6MTc3MTE0MDY1OH0.E3QEaAP5Y_eCF3al1tECYgRI5oDHDjowJYfu30RXpqIDE-CN5iE15TOlEC1hLSJG2sOQ_th3rl5MHy228ce4mw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MTMyOTI1NiwiZXhwIjoxNzcxMzMyODU2fQ.HbIdqr5D1pD3uXZYZz9Qhwf75zs8Isr4fYrM6cyI_zekxZR5bsUlMsuwos69v-ZA81Y95kmZWYu1eKRODA2Wjw
 ###
 PATCH http://localhost:8081/Staff/1
 Content-Type: application/json
@@ -86,4 +87,4 @@ Content-Type: application/json
 }
 ###
 GET http://localhost:8081/students
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpbmciLCJpYXQiOjE3NzA1Mzc5NTQsImV4cCI6MTc3MDU0MTU1NH0.bG1onxD5aR49_imKmVDHE7fDgV8WLX9HNfxv1yY59MNV7gLA4fCJf-YOQtk395Zos_KkLv8trKtHzW-HCnkYTA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc3MTMyOTEzOCwiZXhwIjoxNzcxMzMyNzM4fQ.v9XzHvsjJe6zMWU9ZbSTLSr-J0QeJWmej_jv9Cn_3zytKujiHxtcatpI9-Ev5SKk2-GvuqTuLr0hiEhgpmKtOg
