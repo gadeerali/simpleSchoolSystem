@@ -34,18 +34,6 @@ public class StudentController {
         this.studentRepository = studentRepository;
         this.coursesRepo = coursesRepo;
     }
-  /*
-    @GetMapping
-    public Page<Student> findAllStudents(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "false") boolean softDeleted) {
-
-
-        Pageable pageable = PageRequest.of(page, size);
-        return studentService.findAllStudents(pageable, softDeleted);
-    }
-   */
 
     @GetMapping
     public ResponseEntity<List<Student>> getAllStudents(
@@ -74,21 +62,6 @@ public class StudentController {
     }
 
 
-
-    /*@GetMapping("{page}")
-    public Page<Student> getStudentPages(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "5") int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Student> studentpages = studentRepository.findAll(pageable);
-
-        return studentpages;
-
-    }
-
-     */
-
-
  /*  @DeleteMapping("{id}")
    public void softDeleteStudent(@PathVariable Integer id) {
         studentService.softDeleteStudent(id);
@@ -103,12 +76,12 @@ public class StudentController {
         return Map.of("id", id);
     }
    @GetMapping("{id}")
-    public Student findStudentById(@PathVariable Integer id) {
-        Student student = studentService.findStudentById(id);
+    public ResponseEntity<StudentEnrollmentDTO> findStudentById(@PathVariable Integer id) {
+        StudentEnrollmentDTO student = studentService.findStudentById(id);
         if (student == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
         }
-        return student;
+        return ResponseEntity.ok(student);
 
     }
 
@@ -118,13 +91,20 @@ public class StudentController {
     }
 
 
-    @GetMapping("{id}/courses")
+    /*@GetMapping("{id}/courses")
     public Set<Courses> findStudentCourses(@PathVariable Integer id) {
         Student students = studentService.findStudentById(id);
         if (students == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
         }
         return students.getAssignedCourses();
+    }
+     */
+
+    @GetMapping("{id}/courses")
+    public List<Integer> findStudentCourses(@PathVariable Integer id) {
+        StudentEnrollmentDTO dto = studentService.findStudentById(id);
+        return dto.courseIds();
     }
     @GetMapping("/summary/{id}")
     public Optional<StudentSummary> findStudentSummaryById(@PathVariable Integer id) {
@@ -137,7 +117,7 @@ public class StudentController {
     }
 
 
-     /*  @PutMapping("/{sid}/{cid}")
+     /* @PutMapping("/{sid}/{cid}")
       public Student assingCourseStudent(
               @PathVariable Integer sid,
               @PathVariable Integer cid) {
@@ -146,39 +126,14 @@ public class StudentController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student or course not found");
         }
         return updated;
-
-    }
-
-      */
-
-
-
+    } */
 
     @PutMapping("/{sid}")
-    public Student updateStudent(@PathVariable Integer sid, @RequestBody Student student) {
-        return studentService.updateStudent(sid, student);
+    public ResponseEntity<Student> enrollStudent(@PathVariable Integer sid, @RequestBody StudentEnrollmentDTO dto) {
+
+      Student updatStudent =  studentService.enrollStudentInCourses(sid, dto);
+        return ResponseEntity.ok(updatStudent);
     }
 
-   @DeleteMapping
-    public void deleteAllStudent() {
-        studentService.deleteStudent();
-    }
-
-
-  /*  @PatchMapping("{id}")
-    public Student patchStudent(@PathVariable Integer id, @RequestBody Student student) {
-    Student toPatch = studentService.findStudentById(id);
-    if (toPatch.getName() != null){
-        toPatch.setName(student.getName());
-    }
-    if (toPatch.getAge() != 0){
-        toPatch.setAge(student.getAge());
-    }
-    if (student.getCourses() != null){
-        toPatch.setCourses(student.getCourses());
-    }
-    studentService.saveStudent(toPatch);
-    return studentService.findStudentById(id);
-    } */
 
 }

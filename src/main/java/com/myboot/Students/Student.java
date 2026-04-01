@@ -4,6 +4,7 @@ package com.myboot.Students;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.myboot.Courses.Courses;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.validation.constraints.Min;
@@ -28,6 +29,8 @@ public class Student {
     private String name;
     @Min(value = 18, message = "Student must be at least 18 years old")
     private int age;
+    private String  phoneNumber;
+    private String email;
     private boolean deleted = false;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -41,6 +44,22 @@ public class Student {
     public Student() {
 
     }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String  getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String  phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
 
     public int getId() {
         return id;

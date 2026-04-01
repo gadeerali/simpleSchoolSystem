@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.scheduling.JobScheduler;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -38,13 +39,12 @@ public class StudentService {
 
     @Value("${spring.kafka.topic.name}")
     private String topicName;
-    /* private final KafkaTemplate<String, StudentsEvents> kafkaTemplate;*/
-
     private static final Logger log = LoggerFactory.getLogger(StudentService.class);
     @Autowired
+    private StudentMapper studentMapper;
     public StudentService(StudentRepository studentRepository, CoursesRepo coursesRepo,
                           JobScheduler jobScheduler, StringRedisTemplate redis,
-                          EntityManager entityManager,StudentEventProducer eventProducer ) {
+                          EntityManager entityManager,StudentEventProducer eventProducer) {
         this.studentRepository = studentRepository;
         this.coursesRepo = coursesRepo;
         this.jobScheduler = jobScheduler;
@@ -54,7 +54,7 @@ public class StudentService {
 
     }
 
-
+   //JOBS
    @Recurring (id = "daily-student-count", cron = "0 */1 * * *")
     @Job (name = "daily student count")
     public void scheduledStudents(){
@@ -63,13 +63,14 @@ public class StudentService {
         String cachedCount = redis.opsForValue().get("KeyCount");
         log.info("Students Count (from Redis): {}", cachedCount);
     }
-@Transactional
-    public Student saveStudent(Student student) {
-      studentRepository.save(student);
-        System.out.println("debugging");
 
-      StudentsEvents event = new StudentsEvents(student.getId(),
-              student.getName(), 1);
+    @Transactional
+    public Student saveStudent(Student student) {
+    studentRepository.save(student);
+    System.out.println("debugging");
+
+    StudentsEvents event = new StudentsEvents(student.getId(),
+            student.getName(), 1);
     eventProducer.sendStudentEvent(event);
 
     System.out.println("Student saved with mandatory course");
@@ -87,21 +88,8 @@ public class StudentService {
 
       Integer id = event.studentId();
       kafkaTemplate.send(topicName, event); */
-      return student;
-    }
-
-    /*@Transactional
-    public void softDeleteStudent(Integer id) {
-
-        Student student = studentRepository.findById(id).orElse(null);
-        if (student == null) return;
-
-        student.getAssignedCourses().clear();
-
-        studentRepository.delete(student);
-    }
-
-     */
+    return student;
+}
 
     @Transactional
     public void deleteStudetntById(Integer id) {
@@ -146,11 +134,6 @@ public class StudentService {
        return students;
     }
 
-
-
-
-
-
     public List<Student> findStudentsOlderthan(int age) {
         Specification<Student> spec = SpecsFilters.ageGreaterThan(age);
         return studentRepository.findAll(spec);
@@ -158,13 +141,31 @@ public class StudentService {
 
     }
     @Transactional
-    public Student findStudentById(Integer id) {
+    public StudentEnrollmentDTO findStudentById(Integer id) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
 
-        return studentRepository.findByIdWithCourses(id).orElse(null);
+        return studentMapper.toDto(student);
     }
 
     @Transactional
-    public Student assingCourseStudent(Integer stdId, Integer crsId) {
+    public Student enrollStudentInCourses(Integer sid, StudentEnrollmentDTO dto) {
+        Student student = studentRepository.findById(sid)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+       /* student.setName(dto.name()); //manual mapping
+        student.setAge(dto.age());
+        */
+        studentMapper.updateStudent(dto, student);
+
+        if (dto.courseIds() != null) {
+            var courses = coursesRepo.findAllById(dto.courseIds());
+            student.setAssignedCourses(new HashSet<>(courses));
+        }
+
+       return studentRepository.save(student);
+    }
+    /*public Student assingCourseStudent(Integer stdId, Integer crsId) {
         Student student = studentRepository.findById(stdId).orElse(null);
         if (student == null) {
             return null;
@@ -183,12 +184,16 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public void deleteStudent() {
-        studentRepository.deleteAll();
-    }
+
 
     public Student updateStudent(Integer sid, Student student) {
         return studentRepository.save(student);
+    }
+
+     */
+
+    public void deleteStudent() {
+        studentRepository.deleteAll();
     }
 }
 

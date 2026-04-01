@@ -12,7 +12,7 @@ import {
     TextInput,
     useDelete, useRecordContext,
     List, NumberInput, Edit, ReferenceField, SelectArrayInput, ArrayInput, SimpleFormIterator, Button, FormDataConsumer,
-    ReferenceArrayInput, required
+    ReferenceArrayInput, required, ReferenceArrayField
 } from "react-admin";
 import simpleRestPrvider from "ra-data-simple-rest";
 import { fetchUtils} from 'react-admin';
@@ -39,16 +39,14 @@ const StudentsShow = () => (
             <TextField label="ID" source="id"/>
             <TextField label="Student Name" source="name"/>
             <TextField label="Student Age" source="age"/>
-            <DataTable.Col source="assignedCourses">
-                <ArrayField source="assignedCourses">
+            <TextField label="Phone number" source="phoneNumber"/>
+            <TextField label="Email" source="email"/>
+            <DataTable.Col source="courseIds">
+                <ReferenceArrayField source="courseIds" reference="Courses">
                     <SingleFieldList>
-                        <ReferenceField source="id"
-                                        reference="Courses"
-                                        link="show">
                         <ChipField source="Name" />
-                        </ReferenceField>
                     </SingleFieldList>
-                </ArrayField>
+                </ReferenceArrayField>
             </DataTable.Col>
 
         </SimpleShowLayout>
@@ -66,6 +64,11 @@ const StudentValidation = (inputs) => {
     } else if (inputs.age < 18) {
         errors.age = 'Age must be 18 or older';
     }
+    if (!inputs.phoneNumber) {
+        errors.phoneNumber = 'Phone number is required';
+    } else if (inputs.phoneNumber.length !== 13) {
+        errors.phoneNumber = 'Phone number must be 13 digits';
+    }
     return errors;
 }
 
@@ -75,6 +78,8 @@ const createStudent = () => (
         <SimpleForm validate={StudentValidation}>
             <TextInput label="Student Name" source="name" validate={required()}/>
             <TextInput lable="Student Age" source="age" validate={required()}/>
+            <TextInput label="Phone number starts with +966" source="phoneNumber"/>
+            <TextInput label="Email" source="email"/>
         </SimpleForm>
     </Create>
 );
