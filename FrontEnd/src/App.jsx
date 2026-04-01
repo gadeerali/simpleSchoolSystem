@@ -12,7 +12,7 @@ import {
     TextInput,
     useDelete, useRecordContext,
     List, NumberInput, Edit, ReferenceField, SelectArrayInput, ArrayInput, SimpleFormIterator, Button, FormDataConsumer,
-    ReferenceArrayInput
+    ReferenceArrayInput, required
 } from "react-admin";
 import simpleRestPrvider from "ra-data-simple-rest";
 import { fetchUtils} from 'react-admin';
@@ -56,11 +56,25 @@ const StudentsShow = () => (
     </Show>
 )
 
+const StudentValidation = (inputs) => {
+    const errors = {};
+    if (!inputs.name) {
+        errors.name = 'Name is requires';
+    }
+    if (!inputs.age){
+        errors.age = 'ra.validation.required';
+    } else if (inputs.age < 18) {
+        errors.age = 'Age must be 18 or older';
+    }
+    return errors;
+}
+
+
 const createStudent = () => (
     <Create>
-        <SimpleForm>
-            <TextInput source="name"/>
-            <TextInput source="age"/>
+        <SimpleForm validate={StudentValidation}>
+            <TextInput label="Student Name" source="name" validate={required()}/>
+            <TextInput lable="Student Age" source="age" validate={required()}/>
         </SimpleForm>
     </Create>
 );
